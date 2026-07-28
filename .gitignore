@@ -1,0 +1,6 @@
+bloody-server/.venv/
+**/__pycache__/
+*.pyc
+.env
+bloody-server/logs/
+*.db
