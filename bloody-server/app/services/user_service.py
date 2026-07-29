@@ -36,8 +36,24 @@ def create_user(db: Session, user: UserRegister):
     }
 
 
-def get_users(db: Session):
-    return db.query(User).all()
+def get_users(
+    db: Session,
+    page: int = 1,
+    limit: int = 10,
+    username: str | None = None,
+):
+    query = db.query(User)
+
+    if username:
+        query = query.filter(
+            User.username.contains(username)
+        )
+
+    return (
+        query.offset((page - 1) * limit)
+        .limit(limit)
+        .all()
+    )
 
 
 def get_user(db: Session, user_id: int):

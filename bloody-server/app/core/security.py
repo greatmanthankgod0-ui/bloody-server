@@ -4,8 +4,8 @@ from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.database.session import get_db
 from app.database.models import User
+from app.database.session import get_db
 
 security = HTTPBearer()
 
@@ -25,21 +25,24 @@ def get_current_user(
 
         user_id = payload.get("sub")
 
-        if user_id is None:
+        if not user_id:
             raise HTTPException(
                 status_code=401,
                 detail="Invalid token",
             )
 
-    except JWTError:
+    except JWTError as e:
+        print(f"JWT ERROR: {e}")
         raise HTTPException(
             status_code=401,
             detail="Invalid token",
         )
 
-    user = db.query(User).filter(
-        User.id == int(user_id)
-    ).first()
+    user = (
+        db.query(User)
+        .filter(User.id == int(user_id))
+        .first()
+    )
 
     if user is None:
         raise HTTPException(

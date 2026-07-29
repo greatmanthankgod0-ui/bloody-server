@@ -14,8 +14,18 @@ router = APIRouter(
 
 
 @router.get("/")
-def list_users(db: Session = Depends(get_db)):
-    return get_users(db)
+def list_users(
+    page: int = 1,
+    limit: int = 10,
+    username: str | None = None,
+    db: Session = Depends(get_db),
+):
+    return get_users(
+        db,
+        page,
+        limit,
+        username,
+    )
 
 
 # Static route MUST come before /{user_id}

@@ -1,3 +1,4 @@
+from app.api.upload import router as upload_router
 from app.api import auth
 from app.api import orders
 from app.api import products
@@ -24,3 +25,4 @@ app.include_router(orders.router)
 app.include_router(auth.router)
 
 register_exception_handlers(app)
+app.include_router(upload_router)
